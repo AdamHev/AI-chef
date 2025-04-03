@@ -5,7 +5,7 @@ import { getRecipeFromChefClaude } from "./ai"
 
 
 export default function Main1() {
-    const [ingredients, setIngredients] = React.useState(["all the main spices", "sweet chili", "pepper", "chicken"])
+    const [ingredients, setIngredients] = React.useState([])
     const [recipe, setRecipe] = React.useState(false)
 
     async function getRecipe() {
