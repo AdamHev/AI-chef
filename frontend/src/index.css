@@ -165,11 +165,9 @@ ul.ingredients-list > li {
 }
 
 .instructions {
-  background-color: #ffffff;
   padding: 1rem;
   margin: 1rem auto;
   max-width: 500px;
-
   font-size: 1.1rem;
   text-align: center;
   color: #333;
