@@ -44,7 +44,8 @@ export default function Main1() {
 
         {ingredients.length === 0 && (
             <div className="instructions">
-                👋 Welcome! Tell Chef Claude what ingredients you have, and he’ll whip up a tasty recipe.
+                <p>👋 Welcome! Tell Chef Claude what ingredients you have, and he’ll whip up a tasty recipe.</p>
+                <p>Add a minimum of 4 ingredients.</p>
             </div>
         )}
 
