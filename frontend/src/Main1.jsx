@@ -4,16 +4,15 @@ import ClaudeRecipe from "./components/ClaudeRecipe"
 import { getRecipeFromChefClaude } from "./ai"
 
 export default function Main1() {
-  const [ingredients, setIngredients] = React.useState([])
-  const [recipe, setRecipe] = React.useState("")
-  const [loading, setLoading] = React.useState(false)
-  const [error, setError] = React.useState("")
+  const [ingredients, setIngredients] = React.useState([]) // Initialize ingredients as an empty array
+  const [recipe, setRecipe] = React.useState("") // Initialize recipe as an empty string
+  const [loading, setLoading] = React.useState(false) // Initialize loading as false
+  const [error, setError] = React.useState("")  // Initialize error as an empty string
 
   async function getRecipe() {
     setLoading(true)
     setError("")
     setRecipe("")
-
     try {
       const recipeMarkdown = await getRecipeFromChefClaude(ingredients)
       setRecipe(recipeMarkdown)
@@ -26,8 +25,16 @@ export default function Main1() {
   }
 
   function addIngredient(formData) {
-    const newIngredient = formData.get("ingredient")
-    setIngredients(prevIngredients => [...prevIngredients, newIngredient])
+    const input = formData.get("ingredient")
+  
+    if (!input.trim()) return // ignore empty input
+  
+    const newIngredients = input
+      .split(",")
+      .map(item => item.trim())      // remove extra spaces
+      .filter(item => item.length);  // remove empty strings
+  
+    setIngredients(prev => [...prev, ...newIngredients])
   }
 
   return (
