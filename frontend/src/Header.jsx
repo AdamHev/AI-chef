@@ -1,5 +1,4 @@
 import chefClaudeIcon from './images/chef-claude-icon.png';
-import chefClaudeIcon from './images/ai-chef.png';
 
 export default function Header() {
   return (
