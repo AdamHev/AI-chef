@@ -5,7 +5,7 @@ export default function Header() {
   return (
     <header className="header">
       <img className="logo" src={chefClaudeIcon1} alt="icon" />
-      <h1>Chef Claude</h1>
+      <h1>Fridge Chef</h1>
     </header>
   );
 }

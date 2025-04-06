@@ -51,7 +51,7 @@ export default function Main1() {
 
         {ingredients.length === 0 && (
             <div className="instructions">
-                <p>👋 Welcome! Tell Chef Claude what ingredients you have, and he’ll whip up a tasty recipe.</p>
+                <p>👋 Welcome! Tell Fridge Chef what ingredients you have, and he’ll whip up a tasty recipe.</p>
                 <p>Add a minimum of 4 ingredients.</p>
             </div>
         )}
@@ -64,7 +64,7 @@ export default function Main1() {
         {loading && (
             <div className="thinking">
                 <div className="spinner" />
-                <span>Chef Claude is thinking...</span>
+                <span>Fridge Chef is thinking...</span>
             </div>
         )}
 
