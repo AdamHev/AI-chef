@@ -203,6 +203,7 @@ ul.ingredients-list > li {
   .add-ingredient-form > button {
     width: 100%;
     max-width: none;
+    padding: 10px 12px;
   }
 
   .get-recipe-container {

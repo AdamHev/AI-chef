@@ -49,7 +49,7 @@ export default function Main1() {
             <button>Add ingredient</button>
         </form>
 
-        {ingredients.length === 0 && (
+        {ingredients.length < 4 && (
             <div className="instructions">
                 <p>👋 Welcome! Tell Fridge Chef what ingredients you have, and he’ll whip up a tasty recipe.</p>
                 <p>Add a minimum of 4 ingredients.</p>
