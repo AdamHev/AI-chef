@@ -178,7 +178,7 @@ ul.ingredients-list > li {
 
 @media (max-width: 600px) {
   header {
-    flex-direction: column;
+    flex-direction: row;
     height: auto;
     padding: 10px 0;
     gap: 6px;

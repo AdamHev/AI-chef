@@ -18,7 +18,7 @@ export default function Main1() {
       setRecipe(recipeMarkdown)
     } catch (err) {
         console.error("💥 Caught error from Claude:", err)
-        setError("🍳 Chef Claude took a nap. Try again in a moment.")
+        setError("🍳 Fridge Chef took a nap. Try again in a moment.")
     } finally { 
       setLoading(false)
     }
@@ -50,7 +50,7 @@ export default function Main1() {
         </form>
 
         {ingredients.length < 4 && (
-            <div className="instructions">
+            <div className="instructions">  
                 <p>👋 Welcome! Tell Fridge Chef what ingredients you have, and he’ll whip up a tasty recipe.</p>
                 <p>Add a minimum of 4 ingredients.</p>
             </div>
