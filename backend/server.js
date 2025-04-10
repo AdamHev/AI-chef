@@ -2,25 +2,27 @@ import express from "express"
 import dotenv from "dotenv"
 import Anthropic from "@anthropic-ai/sdk"
 import cors from "cors"
+import pkg from "pg"
 
-// Load environment variables from .env file
-// This is useful for storing sensitive information like API keys
 dotenv.config()
 
-// Initialize the Express application
-// Express is a web framework for Node.js
+const { Pool } = pkg
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false
+})
+
 const app = express()
 app.use(cors())
 app.use(express.json())
 
-// Initialize the Anthropic client
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 })
 
-const SYSTEM_PROMPT = "You are an assistant that receives a list of ingredients that a user has and suggests a recipe they could make with some or all of those ingredients. You don't need to use every ingredient they mention in your recipe. The recipe can include additional ingredients they didn't mention, but try not to include too many extra ingredients. Please only make recipes, that are pretty common, don't come up with weird unorthodox recipes. Format your response in markdown to make it easier to render to a web page."
+const SYSTEM_PROMPT = `You are an assistant...` // your custom Claude prompt
 
-// Retry logic for Claude API with exponential backoff
 async function requestRecipeWithRetry(ingredientsString, retries = 3, delayMs = 1000) {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
@@ -35,26 +37,21 @@ async function requestRecipeWithRetry(ingredientsString, retries = 3, delayMs = 
           },
         ],
       })
-
       return msg.content[0].text
     } catch (error) {
       const errorType = error?.error?.error?.type
-      console.warn(`Error on attempt ${attempt}:`, errorType || error.message)
-
       if (errorType === "overloaded_error") {
-        console.warn(`Claude overloaded — retrying in ${delayMs}ms...`)
+        console.warn(`Overloaded. Retrying in ${delayMs}ms...`)
         await new Promise(res => setTimeout(res, delayMs))
-        delayMs *= 2 // exponential backoff
+        delayMs *= 2
       } else {
-        throw error // stop retrying on non-overload error
+        throw error
       }
     }
   }
-
   throw new Error("Claude is still overloaded after multiple retries")
 }
 
-// Main recipe route
 app.post("/api/recipe", async (req, res) => {
   const { ingredients } = req.body
 
@@ -66,6 +63,13 @@ app.post("/api/recipe", async (req, res) => {
 
   try {
     const recipe = await requestRecipeWithRetry(ingredientsString)
+
+    // Save to database
+    await pool.query(
+      "INSERT INTO recipes (ingredients, recipe) VALUES ($1, $2)",
+      [ingredients, recipe]
+    )
+
     res.json({ recipe })
   } catch (error) {
     console.error("Final error:", error.message || error)
@@ -73,9 +77,7 @@ app.post("/api/recipe", async (req, res) => {
   }
 })
 
-// Listen on port
 const PORT = process.env.PORT || 3001
-
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
