@@ -8,6 +8,14 @@ export default function Main1() {
   const [recipe, setRecipe] = React.useState("") // Initialize recipe as an empty string
   const [loading, setLoading] = React.useState(false) // Initialize loading as false
   const [error, setError] = React.useState("")  // Initialize error as an empty string
+  const recipeSection = React.useRef(null) // Create a ref for the recipe
+  console.log(recipeSection)
+
+  React.useEffect(() => {
+    if ((recipe !== "" || error !== "") && recipeSection.current !== null) {
+      recipeSection.current.scrollIntoView({ behavior: "smooth" })
+    }
+  }, [recipe, error])
 
   async function getRecipe() {
     setLoading(true)
@@ -58,7 +66,11 @@ export default function Main1() {
 
 
         {ingredients.length > 0 && (
-            <IngredientsList ingredients={ingredients} getRecipe={getRecipe} />
+            <IngredientsList 
+              ref={recipeSection}
+              ingredients={ingredients} 
+              getRecipe={getRecipe} 
+              />
         )}
 
         {loading && (
