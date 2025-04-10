@@ -3,12 +3,17 @@ import dotenv from "dotenv"
 import Anthropic from "@anthropic-ai/sdk"
 import cors from "cors"
 
+// Load environment variables from .env file
+// This is useful for storing sensitive information like API keys
 dotenv.config()
 
+// Initialize the Express application
+// Express is a web framework for Node.js
 const app = express()
 app.use(cors())
 app.use(express.json())
 
+// Initialize the Anthropic client
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 })
@@ -68,7 +73,7 @@ app.post("/api/recipe", async (req, res) => {
   }
 })
 
-// 🌍 Listen on the proper port
+// Listen on port
 const PORT = process.env.PORT || 3001
 
 app.listen(PORT, () => {

@@ -243,3 +243,30 @@ ul.ingredients-list > li {
     padding: 0.75rem;
   }
 }
+
+.ingredients-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 1rem 0;
+}
+
+.ingredient-item {
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+}
+
+.remove-button {
+  background: none;
+  border: none;
+  margin-left: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #c00;
+}

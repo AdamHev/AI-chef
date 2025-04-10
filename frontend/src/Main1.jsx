@@ -1,26 +1,48 @@
 import React from "react"
 import IngredientsList from "./components/IngredientsList"
 import ClaudeRecipe from "./components/ClaudeRecipe"
+import { useEffect } from "react"
 import { getRecipeFromChefClaude } from "./ai"
 
 export default function Main1() {
-  const [ingredients, setIngredients] = React.useState([]) // Initialize ingredients as an empty array
-  const [recipe, setRecipe] = React.useState("") // Initialize recipe as an empty string
-  const [loading, setLoading] = React.useState(false) // Initialize loading as false
-  const [error, setError] = React.useState("")  // Initialize error as an empty string
-  const recipeSection = React.useRef(null) // Create a ref for the recipe
-  console.log(recipeSection)
+  const [ingredients, setIngredients] = React.useState([]) 
+  const [recipe, setRecipe] = React.useState("") 
+  const [loading, setLoading] = React.useState(false) 
+  const [error, setError] = React.useState("")  
+  const [hasGeneratedRecipe, setHasGeneratedRecipe] = React.useState(false)
+  const recipeSection = React.useRef(null)
 
-  React.useEffect(() => {
+  // Scroll to the recipe section when a recipe is generated or an error occurs
+  // This effect runs when the recipe or error state changes
+  useEffect(() => {
     if ((recipe !== "" || error !== "") && recipeSection.current !== null) {
       recipeSection.current.scrollIntoView({ behavior: "smooth" })
     }
   }, [recipe, error])
+  
+  // If it becomes empty (length === 0), we reset the relevant UI state
+  useEffect(() => {
+    if (ingredients.length === 0) {
+      setRecipe("")
+      setError("")
+    }
+  }, [ingredients])
 
+  React.useEffect(() => {
+    if (hasGeneratedRecipe) {
+      setHasGeneratedRecipe(true)
+    }
+  }, [ingredients])
+
+
+
+  // Function to get a recipe from Chef Claude
+  // This function is called when the user clicks the "Get a recipe" button
   async function getRecipe() {
     setLoading(true)
     setError("")
     setRecipe("")
+    setHasGeneratedRecipe(true)
     try {
       const recipeMarkdown = await getRecipeFromChefClaude(ingredients)
       setRecipe(recipeMarkdown)
@@ -32,17 +54,36 @@ export default function Main1() {
     }
   }
 
+  // Function to add an ingredient to the list
+  // This function is called when the user submits the form
+  // Normalizes casing ("Milk" → "milk")
+  // Filters out blanks
+  // Only adds new, unique ingredients
   function addIngredient(formData) {
     const input = formData.get("ingredient")
   
-    if (!input.trim()) return // ignore empty input
+    if (!input.trim()) return
   
     const newIngredients = input
       .split(",")
-      .map(item => item.trim())      // remove extra spaces
-      .filter(item => item.length);  // remove empty strings
+      .map(item => item.trim().toLowerCase()) // normalize casing
+      .filter(item => item.length)
   
-    setIngredients(prev => [...prev, ...newIngredients])
+    setIngredients(prev => {
+      const allIngredients = [...prev]
+      newIngredients.forEach(item => {
+        if (!allIngredients.includes(item)) {
+          allIngredients.push(item)
+        }
+      })
+      return allIngredients
+    })
+  }
+  
+
+  // Function to remove an ingredient from the list
+  function removeIngredient(index) {
+    setIngredients(prev => prev.filter((_, i) => i !== index))
   }
 
   return (
@@ -69,9 +110,12 @@ export default function Main1() {
             <IngredientsList 
               ref={recipeSection}
               ingredients={ingredients} 
-              getRecipe={getRecipe} 
+              getRecipe={getRecipe}
+              removeIngredient={removeIngredient}
+              hasGeneratedRecipe={hasGeneratedRecipe}
               />
         )}
+
 
         {loading && (
             <div className="thinking">
