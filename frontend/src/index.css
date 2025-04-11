@@ -270,34 +270,3 @@ ul.ingredients-list > li {
   font-weight: bold;
   color: #c00;
 }
-
-.saved-recipes {
-  margin-top: 2rem;
-  background: #f8f8f8;
-  padding: 1rem;
-  border-radius: 10px;
-}
-
-.save-button {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  background: #ebbbbb;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.saved-recipe {
-  border-top: 1px solid #ddd;
-  margin-top: 1rem;
-  padding-top: 1rem;
-}
-.clear-saved-recipes {
-  background: #7faef9;
-  border: none;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-size: 1rem;
-}

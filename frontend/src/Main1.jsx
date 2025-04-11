@@ -3,14 +3,12 @@ import IngredientsList from "./components/IngredientsList"
 import ClaudeRecipe from "./components/ClaudeRecipe"
 import { useEffect } from "react"
 import { getRecipeFromChefClaude } from "./ai"
-import { marked } from "marked"
 
 export default function Main1() {
   const [ingredients, setIngredients] = React.useState([]) 
   const [recipe, setRecipe] = React.useState("") 
   const [loading, setLoading] = React.useState(false) 
   const [error, setError] = React.useState("")
-  const [savedRecipes, setSavedRecipes] = React.useState(() => loadSavedRecipes())
 
   const recipeSection = React.useRef(null) // Create a ref for the recipe
 
@@ -82,24 +80,7 @@ export default function Main1() {
 
 
 
-  // LOCAL STORAGE
 
-  function saveRecipeLocally(recipeMarkdown) {
-    const saved = JSON.parse(localStorage.getItem("savedRecipes") || "[]")
-    const recipeHtml = marked.parse(recipeMarkdown)
-    saved.push(recipeHtml)  
-    localStorage.setItem("savedRecipes", JSON.stringify(saved))
-  }
-  
-  
-  function loadSavedRecipes() {
-    return JSON.parse(localStorage.getItem("savedRecipes") || "[]")
-  }
-  
-  function clearSavedRecipes() {
-    localStorage.removeItem("savedRecipes")
-  }
-  
 
   return (
     <main>
@@ -147,31 +128,6 @@ export default function Main1() {
         )}
 
         {recipe && !error && <ClaudeRecipe recipe={recipe} />}
-        {recipe && !error && (
-          <button className="save-button" onClick={() => {
-            saveRecipeLocally(recipe)
-            setSavedRecipes(loadSavedRecipes()) // update UI
-          }}>
-            ❤️ Save Recipe
-          </button>
-        )}
-
-        {savedRecipes.length > 0 && (
-          <section className="saved-recipes">
-            <h2>Saved Recipes</h2>
-            {savedRecipes.map((rec, i) => (
-              <div key={i} className="saved-recipe">
-                <div dangerouslySetInnerHTML={{ __html: rec }} />
-              </div>
-            ))}
-            <button onClick={() => {
-              clearSavedRecipes()
-              setSavedRecipes([])
-            }} className="clear-saved-recipes">
-              🗑️  Clear Saved Recipes
-            </button>
-          </section>
-        )}
 
     </main>
   )
