@@ -77,6 +77,8 @@ app.post("/api/recipe", async (req, res) => {
   }
 })
 
+console.log("API key present?", Boolean(process.env.ANTHROPIC_API_KEY))
+
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
