@@ -54,29 +54,35 @@ async function requestRecipeWithRetry(ingredientsString, retries = 3, delayMs = 
 }
 
 app.post("/api/recipe", async (req, res) => {
-  const { ingredients } = req.body
+  const { ingredients } = req.body;
 
   if (!ingredients || !Array.isArray(ingredients)) {
-    return res.status(400).json({ error: "Invalid input: ingredients must be an array" })
+    return res.status(400).json({ error: "Invalid input: ingredients must be an array" });
   }
 
-  const ingredientsString = ingredients.join(", ")
+  const ingredientsString = ingredients.join(", ");
+
+  let recipe;
+  try {
+    recipe = await requestRecipeWithRetry(ingredientsString);
+  } catch (error) {
+    console.error("❌ Claude error:", error.message || error);
+    return res.status(503).json({ error: "Claude is overloaded. Please try again shortly." });
+  }
 
   try {
-    const recipe = await requestRecipeWithRetry(ingredientsString)
-
-    // Save to database
     await pool.query(
       "INSERT INTO recipes (ingredients, recipe) VALUES ($1, $2)",
       [ingredients, recipe]
-    )
-
-    res.json({ recipe })
-  } catch (error) {
-    console.error("Final error:", error.message || error)
-    res.status(503).json({ error: "Claude is overloaded. Please try again shortly." })
+    );
+  } catch (dbError) {
+    console.error("❌ Database error:", dbError.message || dbError);
+    return res.status(500).json({ error: "Failed to save recipe to database." });
   }
-})
+
+  res.json({ recipe });
+});
+
 
 console.log("API key present?", Boolean(process.env.ANTHROPIC_API_KEY))
 
