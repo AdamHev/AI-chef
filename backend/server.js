@@ -19,6 +19,7 @@ app.use(express.json())
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
+  baseURL: "https://api.anthropic.com"
 })
 
 const SYSTEM_PROMPT = `You are an assistant...` // your custom Claude prompt
