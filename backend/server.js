@@ -66,18 +66,8 @@ app.post("/api/recipe", async (req, res) => {
   try {
     recipe = await requestRecipeWithRetry(ingredientsString);
   } catch (error) {
-    console.error("❌ Claude error:", error.message || error);
+    console.error("Claude error:", error.message || error);
     return res.status(503).json({ error: "Claude is overloaded. Please try again shortly." });
-  }
-
-  try {
-    await pool.query(
-      "INSERT INTO recipes (ingredients, recipe) VALUES ($1, $2)",
-      [ingredients, recipe]
-    );
-  } catch (dbError) {
-    console.error("❌ Database error:", dbError.message || dbError);
-    return res.status(500).json({ error: "Failed to save recipe to database." });
   }
 
   res.json({ recipe });

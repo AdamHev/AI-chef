@@ -39,8 +39,8 @@ export default function Main1() {
       const recipeMarkdown = await getRecipeFromChefClaude(ingredients)
       setRecipe(recipeMarkdown)
     } catch (err) {
-        console.error("💥 Caught error from Claude:", err)
-        setError("🍳 Fridge Chef took a nap. Try again in a moment.")
+        console.error("Caught error from Claude:", err)
+        setError("Fridge Chef took a nap. Try again in a moment.")
     } finally { 
       setLoading(false)
     }
@@ -79,9 +79,6 @@ export default function Main1() {
   }
 
 
-
-
-
   return (
     <main>
         <form action={addIngredient} className="add-ingredient-form">
@@ -96,7 +93,7 @@ export default function Main1() {
 
         {ingredients.length < 4 && (
             <div className="instructions">  
-                <p>👋 Welcome! Tell Fridge Chef what ingredients you have, and he’ll whip up a tasty recipe.</p>
+                <p>Welcome! Tell Fridge Chef what ingredients you have, and he’ll whip up a tasty recipe.</p>
                 <p>Add a minimum of 4 ingredients.</p>
             </div>
         )}
@@ -121,7 +118,7 @@ export default function Main1() {
 
         {error && ( 
             <div className="error-message">
-                🍳 {error}<br />
+                {error}<br />
                 <br />
                 <button onClick={getRecipe}>🔁 Try Again</button>
             </div>
