@@ -1,3 +1,19 @@
 # React + Vite
 
-This is a webapp that you can use to input ingredients you have, and makes a recipe using AI.
+Ez a webapp összetevők alapján készít el egy receptet neked az AI segtségével.
+
+URL: https://adammm.uk/
+
+Buildelés:
+    Vite: npm create vite@latest
+    - frontend: npm run dev
+    - backend: node server.js  vagy  npm start
+    - docker-build parancs: docker compose up --build
+
+Github parancsok (példák):
+    - git add .
+    - git commit -m "Add Docker setup for frontend and backend"
+    - git push
+    - git status
+    - git pull
+    - git branch, etc.
