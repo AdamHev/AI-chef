@@ -58,7 +58,7 @@ export default function Main1() {
   
     const newIngredients = input
       .split(",")
-      .map(item => item.trim().toLowerCase()) // normalize casing
+      .map(item => item.trim().toLowerCase())
       .filter(item => item.length)
   
     setIngredients(prev => {
@@ -120,7 +120,7 @@ export default function Main1() {
             <div className="error-message">
                 {error}<br />
                 <br />
-                <button onClick={getRecipe}>🔁 Try Again</button>
+                <button onClick={getRecipe}>Try Again</button>
             </div>
         )}
 

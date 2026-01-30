@@ -1,20 +1,17 @@
-React + Vite + Github + Docker + Vercel + Render
+AI-Chef, URL: https://adammm.uk/
 
-URL: https://adammm.uk/
+A simple website that suggest's recipes based on the ingredient you have.
+Might take a while for the first recipe to create.
 
-## Buildelés
+Built for a React DEVOps project.
 
-Vite: `npm create vite@latest`
+Technology used:
+React + JS + Express + Vite + Github + Docker
+Deployed on:
+Vercel + Render
+
+## Build
 
 - frontend: `npm run dev`
-- backend: `node server.js` vagy `npm start`
-- docker-build parancs: `docker compose up --build`
-
-## Github parancsok (példák)
-
-- git add .
-- git commit -m "Add Docker setup for frontend and backend"
-- git push
-- git status
-- git pull
-- git branch
+- backend: `node server.js` or `npm start`
+- docker-build: `docker compose up --build`

@@ -22,7 +22,10 @@ const anthropic = new Anthropic({
   baseURL: "https://api.anthropic.com"
 })
 
-const SYSTEM_PROMPT = `You are an assistant...` // your custom Claude prompt
+const SYSTEM_PROMPT = `You are an assistant that suggests recipes based on a list of ingredients.
+You respond in markdown format, with a title, a list of ingredients, and step-by-step instructions.
+If the ingredients are insufficient to make a reasonable recipe, politely explain this and suggest adding more ingredients.
+Keep your response concise and relevant to the ingredients provided.`
 
 async function requestRecipeWithRetry(ingredientsString, retries = 3, delayMs = 1000) {
   for (let attempt = 1; attempt <= retries; attempt++) {
